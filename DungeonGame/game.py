@@ -50,5 +50,11 @@ class Game:
             printable_row += ' | '.join(row) + ' |'
             print(printable_row)
 
+    def check_for_win(self):
+        return (self.player.location == self.exit_location)
+
+    def check_for_loss(self):
+        return (self.player.location == self.monster_location)
+
 game = Game()
 print(f'Player at {game.player.location}, exit at {game.exit_location}, monster at {game.monster_location}')
