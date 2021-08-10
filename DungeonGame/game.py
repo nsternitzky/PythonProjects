@@ -14,7 +14,6 @@ class Game:
         self.set_player()
         self.set_exit_location()
         self.set_monster_location()
-        self.create_grid()
 
     def set_player(self):
         player_start_location = random.choice(self.locations)
@@ -56,5 +55,39 @@ class Game:
     def check_for_loss(self):
         return (self.player.location == self.monster_location)
 
+    def move_player(self, direction):
+        player_col = self.player.location[0]
+        player_row = self.player.location[1]
+
+        if direction.lower() == 'up':
+            if player_row == '1':
+                print("Sorry, you can't move off the grid.")
+            else:
+                new_location = f'{player_col}{int(player_row) - 1}'
+                self.player.move(new_location)
+        if direction.lower() == 'down':
+            if player_row == str(self.size):
+                print("Sorry, you can't move off the grid.")
+            else:
+                new_location = f'{player_col}{int(player_row) + 1}'
+                self.player.move(new_location)
+        if direction.lower() == 'left':
+            if player_col == self.columns[0]:
+                print("Sorry, you can't move off the grid.")
+            else:
+                new_location = f'{self.columns[self.columns.index(player_col) - 1]}{player_row}'
+                self.player.move(new_location)
+        if direction.lower() == 'right':
+            if player_col == self.columns[len(self.columns) - 1]:
+                print("Sorry, you can't move off the grid.")
+            else:
+                new_location = f'{self.columns[self.columns.index(player_col) + 1]}{player_row}'
+                self.player.move(new_location)
+
 game = Game()
 print(f'Player at {game.player.location}, exit at {game.exit_location}, monster at {game.monster_location}')
+
+while not game.check_for_win() and not game.check_for_loss():
+    game.create_grid()
+    direction = input("Move: ")
+    game.move_player(direction)
