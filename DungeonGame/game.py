@@ -6,6 +6,7 @@ class Game:
         self.size = 4
         self.columns = ['A','B','C','D']
         self.locations = []
+        self.visited_locations = []
 
         for col in self.columns:
             for num in range(1, self.size + 1):
@@ -18,6 +19,7 @@ class Game:
     def set_player(self):
         player_start_location = random.choice(self.locations)
         self.player = Player("Dante", player_start_location)
+        self.visited_locations.append(player_start_location)
 
     def set_exit_location(self):
         exit_location = random.choice(self.locations)
@@ -34,8 +36,11 @@ class Game:
     def create_row(self, num):
         row = []
         for col in self.columns:
-            if self.player.location == f'{col}{num}':
+            current_location = f'{col}{num}'
+            if self.player.location == current_location:
                 row.append('X')
+            elif current_location in self.visited_locations:
+                row.append('-')
             else:
                 row.append(' ')
         return row
@@ -79,24 +84,28 @@ class Game:
             else:
                 new_location = f'{player_col}{int(player_row) - 1}'
                 self.player.move(new_location)
+                self.visited_locations.append(new_location)
         if direction.lower() == 'down':
             if player_row == str(self.size):
                 print("Sorry, you can't move off the grid.")
             else:
                 new_location = f'{player_col}{int(player_row) + 1}'
                 self.player.move(new_location)
+                self.visited_locations.append(new_location)
         if direction.lower() == 'left':
             if player_col == self.columns[0]:
                 print("Sorry, you can't move off the grid.")
             else:
                 new_location = f'{self.columns[self.columns.index(player_col) - 1]}{player_row}'
                 self.player.move(new_location)
+                self.visited_locations.append(new_location)
         if direction.lower() == 'right':
             if player_col == self.columns[len(self.columns) - 1]:
                 print("Sorry, you can't move off the grid.")
             else:
                 new_location = f'{self.columns[self.columns.index(player_col) + 1]}{player_row}'
                 self.player.move(new_location)
+                self.visited_locations.append(new_location)
 
 game = Game()
 print(f'Player at {game.player.location}, exit at {game.exit_location}, monster at {game.monster_location}')
