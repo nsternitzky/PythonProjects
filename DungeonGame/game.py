@@ -56,10 +56,11 @@ class Game:
         return (self.player.location == self.monster_location)
 
     def run_game(self):
+        print("\nWelcome to the dungeon! Look for the exit, but don't run into the hungry monster!\n")
         game_running = True
         while game_running:
             self.create_grid()
-            direction = input("Which direction do you want to move in? (up/down/left/right) ")
+            direction = input("\nWhich direction do you want to move in? (up/down/left/right) ")
             self.move_player(direction)
             if self.check_for_win():
                 print("Congratulations, you found the exit!")
