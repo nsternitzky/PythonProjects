@@ -55,6 +55,19 @@ class Game:
     def check_for_loss(self):
         return (self.player.location == self.monster_location)
 
+    def run_game(self):
+        game_running = True
+        while game_running:
+            self.create_grid()
+            direction = input("Which direction do you want to move in? (up/down/left/right) ")
+            self.move_player(direction)
+            if self.check_for_win():
+                print("Congratulations, you found the exit!")
+                game_running = False
+            if self.check_for_loss():
+                print("Oh no, the monster got you! Game over.")
+                game_running = False
+
     def move_player(self, direction):
         player_col = self.player.location[0]
         player_row = self.player.location[1]
@@ -86,8 +99,4 @@ class Game:
 
 game = Game()
 print(f'Player at {game.player.location}, exit at {game.exit_location}, monster at {game.monster_location}')
-
-while not game.check_for_win() and not game.check_for_loss():
-    game.create_grid()
-    direction = input("Move: ")
-    game.move_player(direction)
+game.run_game()
